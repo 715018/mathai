@@ -14,12 +14,31 @@ public class Drive : MonoBehaviour
     {
 
     }
+    void CalculateAngle()
+    {
+        Vector3 tankForward = transform.up;
+        Vector3 fuelDirection = fuel.transform.position - transform.position;
+
+        Debug.DrawRay(this.transform.position, tankForward, Color.green, 10);
+        Debug.DrawRay(this.transform.position, fuelDirection, Color.red, 10);
+    }
 
     void CalculateDistance()
     {
-        float distance = 0;
+        float distance = Mathf.Sqrt(Mathf.Pow(fuel.transform.position.x - transform.position.x,2) +
+            Mathf.Pow(fuel.transform.position.z - transform.position.z,2));
+
+        Vector3 fuelPos = new Vector3(fuel.transform.position.x, 0, fuel.transform.position.z);
+        Vector3 tankPos = new Vector3(transform.position.x, 0, transform.position.z);
+        float uDistance = Vector3.Distance(fuelPos, tankPos);
+
+        Vector3 tankToFuel = fuelPos  - tankPos;
+
 
         Debug.Log("Distance: " +  distance);
+        Debug.Log("U Distance: " +  uDistance);
+        Debug.Log("V Magnitude: " + tankToFuel.magnitude);
+        Debug.Log("V sqrMagnitude: " + tankToFuel.sqrMagnitude);
     }
     void LateUpdate()
     {
@@ -42,6 +61,7 @@ public class Drive : MonoBehaviour
         if (Input.GetKeyDown (KeyCode.Space))
         {
             CalculateDistance();
+            CalculateAngle();
         }
     }
 }
